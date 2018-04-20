@@ -92,7 +92,7 @@ function addTask() {
   // Store in LS
   storeTaskInLocalStorage(taskInput.value);
 
-  // Clear input
+  // Clears the input textbox after storing tasks
   taskInput.value = '';
 
   e.preventDefault();
@@ -106,7 +106,7 @@ function storeTaskInLocalStorage(task) {
     tasks = [];
   } else {
     // Since local storage only stores  data as strings we have to parse it as JSON while retrieving it
-    // for the retrieved data to be in a readable by JS
+    // for the retrieved data to be readable by JS
     tasks = JSON.parse(localStorage.getItem('tasks'));
   }
   // Push the 'task' passed as a parameter in line 61 to the 'tasks array'
@@ -151,11 +151,13 @@ function removeTaskFromLocalStorage(taskItem) {
 
 // Clear Tasks
 function clearTasks() {
+  // Using innerHTML approach
   // taskList.innerHTML = '';
 
-  // The while solution below executes Faster than taskList.innerHTML in Line-67 
+  // Using while approach which is faster than innerHTML
   // Refer: // https://jsperf.com/innerhtml-vs-removechild
-  // The statement below means - while there is still data in the firstChild, remove it
+  // firstChild is going to get the firstChild from the List
+  // So wer are saying, while there is still data in the firstChild, remove it
   while(taskList.firstChild) {
     taskList.removeChild(taskList.firstChild);
   }
@@ -175,6 +177,9 @@ function filterTasks(e) {
   const text = e.target.value.toLowerCase();
 
   // task is the currentValue of the arrayItem passed by querySelectorAll
+  // We can use forEach with querySelectorAll because it return a Node List
+  // Had we used getElementByClasses or ElementByClass that would return an HTML collection
+  // which had to be converted to an array to be able to use forEach
   document.querySelectorAll('.collection-item').forEach(function(task){
     const item = task.firstChild.textContent;
     if(item.toLowerCase().indexOf(text) != -1){
