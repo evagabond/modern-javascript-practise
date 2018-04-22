@@ -26,7 +26,37 @@ function calculateResults(e){
     totalPayment.value = (monthly * calculatedPayments).toFixed(2);
     totalInterest.value = ((monthly * calculatedPayments)-principal).toFixed(2);
   } else {
-    console.log('Please check your numbers');
+    showError('Please check your numbers');
+  }
+
+  // Show Error
+  function showError(error) {
+    // Create a div
+    const errorDiv = document.createElement('div');
+
+    // Get elements
+    const card = document.querySelector('.card');
+    const heading = document.querySelector('.heading');
+
+    // Add class
+    // In Bootstrap to display warning you use alert & alert-danger class
+    errorDiv.className = 'alert alert-danger';
+
+    // Create text node and append to div
+    // error is the paramenter passed during function call at Line-29
+    errorDiv.appendChild(document.createTextNode(error));
+
+    // Insert & display error message above heading
+    card.insertBefore(errorDiv, heading);
+
+    // Clear error alert message after 3 seconds
+    setTimeout(clearError, 3000);
+
+  }
+
+  // Clear error
+  function clearError() {
+    document.querySelector('.alert').remove();
   }
 
 
