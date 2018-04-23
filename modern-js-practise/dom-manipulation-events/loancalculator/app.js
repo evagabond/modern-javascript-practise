@@ -1,8 +1,19 @@
 // Listen for submit
-document.getElementById('loan-form').addEventListener('submit', calculateResults);
+document.getElementById('loan-form').addEventListener('submit', function(e){
+  // Hide results
+  document.getElementById('results').style.display = 'none';
+
+  // Show loader
+  document.getElementById('loading').style.display = 'block';
+
+  setTimeout(calculateResults, 2000);
+
+
+  e.preventDefault();
+});
 
 // Calculate Results
-function calculateResults(e){
+function calculateResults(){
   console.log('Calculating...');
   // UI Vars
   const amount = document.getElementById('amount');
@@ -20,17 +31,30 @@ function calculateResults(e){
   const x = Math.pow(1 + calculatedInterest, calculatedPayments);
   const monthly = (principal*x*calculatedInterest)/(x-1);
 
-  // Test the correctness of your formula here: https://tinyurl.com/y8h6pkg7
+  // Test the correctness of your Loan formula here: https://tinyurl.com/y8h6pkg7
   if(isFinite(monthly)) {
     monthlyPayment.value = monthly.toFixed(2);
     totalPayment.value = (monthly * calculatedPayments).toFixed(2);
-    totalInterest.value = ((monthly * calculatedPayments)-principal).toFixed(2);
+    totalInterest.value = ((monthly * calculatedPayments)-principal).toFixed(2);    
+  
+    // Show results after setTimer's 2 sec delay
+    document.getElementById('results').style.display = 'block';
+
+    // Hide loader
+    document.getElementById('loading').style.display = 'none';
+
   } else {
     showError('Please check your numbers');
   }
 
   // Show Error
   function showError(error) {
+    // Hide results
+    document.getElementById('results').style.display = 'none';
+
+    // Hide loader
+    document.getElementById('loading').style.display = 'none';
+
     // Create a div
     const errorDiv = document.createElement('div');
 
@@ -38,7 +62,7 @@ function calculateResults(e){
     const card = document.querySelector('.card');
     const heading = document.querySelector('.heading');
 
-    // Add class
+    // Add alert css classes
     // In Bootstrap to display warning you use alert & alert-danger class
     errorDiv.className = 'alert alert-danger';
 
@@ -59,6 +83,4 @@ function calculateResults(e){
     document.querySelector('.alert').remove();
   }
 
-
-  e.preventDefault();
 }
